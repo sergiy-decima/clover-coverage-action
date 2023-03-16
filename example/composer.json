@@ -1,0 +1,42 @@
+{
+  "name": "sergiy-decima/clover-coverage-action-example",
+  "description": "A package to perform unit conversions",
+  "keywords": [
+    "sergiy-decima",
+    "clover-coverage-action"
+  ],
+  "homepage": "https://github.com/sergiy-decima/clover-coverage-action",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Elvis Presley",
+      "email": "elvis@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Example\\Pet\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Example\\Pet\\Test\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit -c phpunit.xml.dist tests --coverage-html=output/coverage --coverage-text=output/coverage.txt --coverage-clover=output/clover.coverage.xml"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
