@@ -57,6 +57,6 @@ jobs:
       - name: Coverage Summary Report
         uses: ./
         with:
-          clover_report_path: example/output/clover.coverage.xml
-          min_coverage_percent: 60..80
-          fail_build_on_under: true
+          filename: example/output/clover.coverage.xml
+          thresholds: 60..80
+          fail_if_low: true
