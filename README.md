@@ -6,7 +6,7 @@ You can add this action to your GitHub workflow:
 
 ```yaml      
 - name: Summary Coverage Report
-  uses: sergiy-decima/clover-coverage-action@master
+  uses: sergiy-decima/clover-coverage-action@v1.0.0
   if: always()
   with:
     filename: clover-coverage.xml
