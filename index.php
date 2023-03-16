@@ -93,7 +93,7 @@ file_put_contents($_ENV['GITHUB_OUTPUT'], sprintf("percent=%s", $linePercent) . 
 $classMark  = generateHealthIndicator($classPercent);
 $methodMark = generateHealthIndicator($methodPercent);
 $lineMark   = generateHealthIndicator($linePercent);
-printf("${BOLD_COLOR}Summary Coverage Report:${NORMAL_COLOR}" . PHP_EOL);
+printf("{$BOLD_COLOR}Summary Coverage Report:{$NORMAL_COLOR}" . PHP_EOL);
 printf("  Classes: %' 8.2f%%  (%d/%d)\t$classMark" . PHP_EOL, $classPercent, $classHits, $classTotals);
 printf("  Methods: %' 8.2f%%  (%d/%d)\t$methodMark" . PHP_EOL, $methodPercent, $methodHits, $methodTotals);
 printf("  Lines:   %' 8.2f%%  (%d/%d)\t$lineMark" . PHP_EOL, $linePercent, $lineHits, $lineTotals);
@@ -109,8 +109,8 @@ foreach ($classSummary as $name => $info) {
     $linePercentItem  = $lineTotalsItem ? sprintf('%.02f', $lineHitsItem / $lineTotalsItem * 100) : 0;
 
     $MARKED_COLOR = generateHealthColor($linePercentItem);
-    printf("${BOLD_COLOR}%s${NORMAL_COLOR}" . PHP_EOL, $name);
-    printf("${MARKED_COLOR}  Methods: %' 8.2f%%  (%d/%d) ${NORMAL_COLOR}\t${MARKED_COLOR} Lines: %' 8.2f%%  (%d/%d) ${NORMAL_COLOR}" . PHP_EOL,
+    printf("{$BOLD_COLOR}%s{$NORMAL_COLOR}" . PHP_EOL, $name);
+    printf("{$MARKED_COLOR}  Methods: %' 8.2f%%  (%d/%d) {$NORMAL_COLOR}\t{$MARKED_COLOR} Lines: %' 8.2f%%  (%d/%d) {$NORMAL_COLOR}" . PHP_EOL,
         $classPercentItem, $classHitsItem, $classTotalsItem,
         $linePercentItem, $lineHitsItem, $lineTotalsItem
     );
@@ -119,8 +119,8 @@ $classSummary && print PHP_EOL;
 
 // Summary Line
 if ($linePercent >= $minPercentToBuild) {
-    printf("${GREEN_COLOR}${BOLD_COLOR}> Summary Line Coverage: %s%% ($lineHits/$lineTotals)${NORMAL_COLOR}" . PHP_EOL, $linePercent);
+    printf("{$GREEN_COLOR}{$BOLD_COLOR}> Summary Line Coverage: %s%% ($lineHits/$lineTotals){$NORMAL_COLOR}" . PHP_EOL, $linePercent);
 } else {
-    printf("${RED_COLOR}${BOLD_COLOR}Error: Code coverage is %s%% (%d/%d), which is below the accepted %s%%.${NORMAL_COLOR}" . PHP_EOL, (float)$linePercent, $lineHits, $lineTotals, $minPercentToBuild);
+    printf("{$RED_COLOR}{$BOLD_COLOR}Error: Code coverage is %s%% (%d/%d), which is below the accepted %s%%.{$NORMAL_COLOR}" . PHP_EOL, (float)$linePercent, $lineHits, $lineTotals, $minPercentToBuild);
     exit($failIfLow ? 1 : 0);
 }
