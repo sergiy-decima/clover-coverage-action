@@ -5,8 +5,6 @@ red    := \033[31m\033[1m
 
 include .env
 
-export COMPOSE_PROJECT_NAME
-
 help:
 	@echo "\n\
 Usage:                         make $(yellow)<COMMANDS>$(normal)\n\
