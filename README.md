@@ -34,6 +34,8 @@ Fail the workflow if the overall Line Rate is below lower threshold - **true** o
 
 Code coverage percent.
 
-## Below is screenshot of the workflow action:
+<hr>
 
-![positive-coverage.png](misc%2Fpositive-coverage.png)
+### Below is screenshot of the positive workflow action:
+
+<img src="misc/positive-coverage.png" width="470px" alt="Positive Coverage" title="Positive Coverage">
