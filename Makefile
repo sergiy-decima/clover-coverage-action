@@ -3,45 +3,49 @@ yellow := \033[33m\033[1m
 green  := \033[32m\033[1m
 red    := \033[31m\033[1m
 
-include .env
+EXAMPLE_APP_DIR := "example"
+IMAGE_COVERED_ACTION := "clover-coverage-action"
+GITHUB_OUTPUT := "github_output.log"
 
 help:
 	@echo "\n\
 Usage:                         make $(yellow)<COMMANDS>$(normal)\n\
 \n\
 Build:                         make build\n\
-Test:                          make test\n\
+Test Action:                   make test\n\
 \n\
-$(yellow)Management Commands:$(normal)\n\
+$(yellow)Action Commands:$(normal)\n\
   build                        Build environment\n\
-  test                         Run testing of action\n\
-  example-bash                 Connect to bash in example env\n\
-  example-test                 Run tests of example env\n\
-  example-down                 Destroy example containers\n\
+  test                         Run test action\n\
+\n\
+$(yellow)Test Application Commands:$(normal)\n\
+  app-build                    Build application environment\n\
+  app-down                     Destroy application containers\n\
+  app-test                     Run test application\n\
+  app-bash                     Connect to bash of application\n\
 "
 
-build: example-build example-test test
+build: app-build app-test test
 
 action-build-image:
 	docker build -t $(IMAGE_COVERED_ACTION) .
 
 test: action-build-image
 	rm -rf $(GITHUB_OUTPUT)
-	docker run --rm --workdir /app -e "GITHUB_OUTPUT=$(GITHUB_OUTPUT)" -v "$(shell pwd)":"/app" $(IMAGE_COVERED_ACTION) "$(EXAMPLE_DIR)/output/clover.coverage.xml" "60..80" "true"
+	docker run --rm --workdir /app -e "GITHUB_OUTPUT=$(GITHUB_OUTPUT)" -v "$(shell pwd)":"/app" $(IMAGE_COVERED_ACTION) "$(EXAMPLE_APP_DIR)/output/clover.coverage.xml" "60..80" "true"
 
-example-build: example-composer-install
+app-build: app-up
+	cd $(EXAMPLE_APP_DIR) && docker compose run --rm app composer install
 
-example-up:
-	cd $(EXAMPLE_DIR) && docker compose up -d
+app-up:
+	cd $(EXAMPLE_APP_DIR) && docker compose up -d
 
-example-down:
-	cd $(EXAMPLE_DIR) && docker compose down
+app-down:
+	cd $(EXAMPLE_APP_DIR) && docker compose down
 
-example-bash: example-up
-	cd $(EXAMPLE_DIR) && docker compose run --rm example bash
+app-bash: app-up
+	cd $(EXAMPLE_APP_DIR) && docker compose run --rm app bash
 
-example-composer-install: example-up
-	cd $(EXAMPLE_DIR) && docker compose run --rm example composer install
 
-example-test: example-up
-	cd $(EXAMPLE_DIR) && docker compose run --rm example composer test
+app-test: app-up
+	cd $(EXAMPLE_APP_DIR) && docker compose run --rm app composer test
