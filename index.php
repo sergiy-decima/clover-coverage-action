@@ -48,7 +48,7 @@ $classSummary = [];
 $classHits   = $methodHits   = $lineHits   = 0;
 $classTotals = $methodTotals = $lineTotals = 0;
 foreach ((array)simplexml_load_file($filename)->xpath('*/file') as $fileElement) {
-    $classes = ((array)$fileElement)['class'];
+    $classes = ((array)$fileElement)['class'] ?? [];
     if (is_object($classes)) {
         $classes = [$classes];
     }
