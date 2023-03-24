@@ -1,0 +1,62 @@
+name: Demo Coverage
+run-name: Coverage Testing
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - .env
+      - Makefile
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - .env
+      - Makefile
+      - '**.md'
+  workflow_dispatch:
+  schedule:
+    - cron: '30 5,17 * * *'
+jobs:
+  build:
+    name: Build Test Server
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: phpunit-bridge
+          extensions: mbstring, xml, ctype, iconv, json, mcrypt, zip, simplexml, bcmath, intl, dom
+          coverage: xdebug
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Create Composer Cache
+        id: cache-composer
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer Dependencies
+        working-directory: example
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run PHPUnit Tests
+        working-directory: example
+        run: vendor/bin/phpunit --coverage-clover=output/clover.coverage.xml
+
+      - name: Coverage Summary Report
+        uses: ./
+        with:
+          filename: example/output/clover.coverage.xml
+          thresholds: 60..80
+          fail_if_low: true
